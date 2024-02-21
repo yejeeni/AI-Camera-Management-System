@@ -1,0 +1,101 @@
+@media screen and (min-width: 1537px){
+    .gall-list.flex25{
+        flex: 0 0 24%
+    }
+
+
+
+}
+
+@media screen and (min-width:1356px) and (max-width: 1536px) {
+	html{
+        font-size: 8.5px;
+    }
+    button {
+        font-size: 1.2rem;
+    }
+
+    .flex5 {
+        flex: 0 0 4%
+    }
+    
+    .flex10 {
+        flex: 0 0 9%
+    }
+    
+    .flex15 {
+        flex: 0 0 14%
+    }
+    
+    .flex20 {
+        flex: 0 0 19%
+    }
+    
+    .flex25 {
+        flex: 0 0 24%
+    }
+    
+    .flex30 {
+        flex: 0 0 29%
+    }
+    
+    .flex35 {
+        flex: 0 0 34%
+    }
+    
+    .flex40 {
+        flex: 0 0 39%
+    }
+    
+    .flex45 {
+        flex: 0 0 44%
+    }
+    
+    .flex50 {
+        flex: 0 0 49%
+    }
+    
+    .flex55 {
+        flex: 0 0 54%
+    }
+    
+    
+    .flex60 {
+        flex: 0 0 59%
+    }
+    
+    .flex65 {
+        flex: 0 0 64%
+    }
+    
+    
+    .flex70 {
+        flex: 0 0 69%
+    }
+    
+    .flex75 {
+        flex: 0 0 74%
+    }
+    
+    .flex80 {
+        flex: 0 0 79%
+    }
+    
+    .flex85 {
+        flex: 0 0 84%
+    }
+    
+    .flex90 {
+        flex: 0 0 89%
+    }
+    
+    .flex95 {
+        flex: 0 0 94%
+    }
+
+    .content-list{
+        min-height: 449px;
+    }
+
+
+}

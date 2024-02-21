@@ -1,0 +1,414 @@
+@charset "utf-8";
+
+/* box 공통 */
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.content-box {
+    width: 100%;
+    height: 100%;
+}
+
+.left-content,
+.right-content {
+    height: 100%;
+}
+
+.content-wrap{
+    height: calc(100% - 47px);
+}
+
+.content {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.content:last-child {
+    margin-bottom: 0;
+}
+
+.content-zone {
+    height: calc(100% - 57px);
+}
+
+.left-content,
+.right-content,
+.row,
+.content {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fff;
+    position: relative;
+}
+
+.row {
+    padding: 0;
+}
+
+.form-box {
+    background-color: #edf0ff;
+    border: 1px solid #dbe3fb;
+    padding: 15px;
+}
+
+
+.border {
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+/* title 공통 */
+.page-titleZone {
+    margin-bottom: 10px;
+}
+
+.main-title {
+    font-family: 'GmarketSansB';
+    font-size: 2rem;
+    color: #213f99;
+}
+
+.content-titleZone {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 15px;
+}
+
+.box-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* 테이블 공통 */
+.table-zone {
+    padding: 15px 0;
+}
+
+.list-table,
+.form-table {
+    border-bottom: 1px solid #aaa;
+}
+
+.list-table th,
+.list-table td,
+.form-table th {
+    text-align: center;
+}
+
+.list-table th,
+.list-table td,
+.form-table th,
+.form-table td {
+    border-top: 1px solid #aaa;
+}
+
+.list-table thead th {
+    background-color: #dbe3fb;
+    color: #213f99;
+}
+
+.list-table.orange thead tr {
+    background-color: #f29600;
+    color: #fff;
+}
+
+.list-table tbody tr {
+    cursor: pointer;
+}
+
+.list-table tbody tr:nth-child(even) {
+    background-color: #f4f6ff;
+}
+
+.list-table.orange tbody tr:nth-child(even) {
+    background-color: #fff2de;
+}
+
+.form-table th {
+    color: #213f99;
+    text-align: center;
+    background-color: #dbe3fb;
+}
+
+.form-table2 th {
+    color: #213f99;
+    text-align: center;
+}
+
+.option-table th {
+    color: #213f99;
+}
+
+.list-info {
+    margin-bottom: 10px;
+}
+
+.no-list {
+    text-align: center;
+    font-size: 1.3rem;
+    line-height: 120px;
+}
+
+/* 서치바 공통 */
+/* .table-zone */
+.searchbar-zone {
+    margin-bottom: 10px;
+}
+
+/* 기본 서치바 */
+.search-square {
+    position: relative;
+    margin-left: 5px;
+}
+
+.square-date,
+.square-select {
+    width: 150px;
+}
+
+.square-input {
+    color: #646464;
+    padding: 6px 10px;
+    border-radius: 5px;
+    width: 300px;
+    transition: all ease-in-out .5s;
+}
+
+.square-input:hover,
+.square-input:focus {
+    box-shadow: 0 0 1em #00000013;
+}
+
+.square-input:focus {
+    outline: none;
+    background-color: #f0eeee;
+}
+
+.square-input::-webkit-input-placeholder {
+    font-weight: 100;
+    color: #ccc;
+}
+
+.square-input:focus {
+    background-color: #f0eeee;
+}
+
+.square-button {
+    border: none;
+    margin-left: 0;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.square-button:hover {
+    cursor: pointer;
+}
+
+.square-icon {
+    color: #b4b4b4;
+}
+
+.full-input,
+.full-select {
+    width: 100%;
+}
+
+.half-input,
+.half-select {
+    width: 50%;
+}
+
+/* 상세 서치바 */
+.search-bottom {
+    padding: 10px 0;
+}
+
+.option-searchbar {
+    width: 75%;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #f8f9fe;
+    border-radius: 10px;
+}
+
+/* 기타 공통 */
+.coupler {
+    font-size: 1.3rem;
+    margin-left: 5px;
+}
+
+.option-title {
+    padding: 0 5px;
+    font-size: 1.3rem;
+    color: #213f99;
+    margin-left: 5px;
+}
+
+.count-zone {
+    font-size: 1.3rem;
+}
+
+.count-zone span {
+    font-weight: 900;
+    color: #213f99;
+}
+
+
+/* 모달 */
+.modal-wrapper {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.modal-container {
+    background: #fff;
+    min-width: 500px;
+    width: 50%;
+    height: 90%;
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 20px;
+    box-sizing: border-box;
+    max-height: 95%;
+    min-height: 500px;
+}
+
+.modal-title {
+    width: 100%;
+    border-bottom: 1px solid #d4cccc;
+    padding: 10px 0;
+}
+
+.modal-subtitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.modal-content-monthly {
+    width: 100%;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.large-modal {
+    width: 90%;
+}
+
+.small-modal {
+    min-width: 200px;
+    min-height: 200px;
+    max-width: 450px;
+    height: auto;
+    max-height: 50%;
+}
+
+.list-modal {
+    width: 80%;
+    height: 80%;
+}
+
+.alert-write {
+    font-size: 1.6rem;
+    line-height: 180%;
+}
+
+
+.modal-content-monthly::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content-monthly::-webkit-scrollbar-thumb {
+    background-color: #6b6b6b;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+.modal-content-monthly::-webkit-scrollbar-track {
+    background-color: #eee;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+
+.modal-end {
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.alert-modal .modal-end button,
+.small-modal .modal-end button {
+    margin-left: 0;
+}
+
+
+/* 탭 */
+.tab-nav {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.tab-nav li a {
+    display: block;
+    font-size: 1.6rem;
+    text-align: center;
+    border-right: 1px solid #eee;
+    padding: 0 10px;
+}
+
+.tab-nav li a.activeTab {
+    color: #213f99;
+    font-weight: 600;
+}
+
+.tab-nav li:last-child a {
+    border-right: 0;
+}
+
+
+/* 라벨 css(상세 조회랑 다름) */
+.chekck-type {
+    display: none;
+}
+
+.chekcktype-label {
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: #d6def6;
+    color: #213f99;
+}
+
+.chekck-type:checked+label {
+    background-color: #213f99;
+    color: #fff;
+}
+
+
+/* file tree */
+.file-list {
+    display: block;
+    padding: 5px;
+    font-size: 1.3rem;
+}
+
+.selected {
+    background-color: rgb(255, 249, 239);
+    border: 1px solid var(--color-orange);
+    color: var(--color-orange);
+    border-radius: 5px;
+}

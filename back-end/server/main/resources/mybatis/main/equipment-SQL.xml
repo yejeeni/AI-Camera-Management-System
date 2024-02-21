@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--
+	작성자 : 황대찬
+	작성일 : 2024.01.15
+	내용 : equipment Mapper 입니다.
+ -->
+<mapper namespace="kr.co.takensoft.aiCamera.equipment.dao.EquipmentDAO">
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 : 장비 등록 SQL
+    -->
+    <insert id="equipmentInsert" parameterType="HashMap">
+    INSERT INTO eqpmn_reg_info(
+        eqpmn_id,
+        eqpmn_nm,
+        eqpmn_lat,
+        eqpmn_lon,
+        camera_ip,
+        camera_nm,
+        cntn_id,
+        cntn_pw,
+        reg_dt,
+        rgtr_id,
+        use_yn
+    ) VALUES (
+        #{eqpmn_id},
+        #{eqpmn_nm},
+        #{eqpmn_lat},
+        #{eqpmn_lon},
+        #{camera_ip},
+        #{camera_nm},
+        #{cntn_id},
+        #{cntn_pw},
+        CURRENT_TIMESTAMP,
+        #{rgtr_id},
+        'Y'
+    );
+    </insert>
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 : 장비 목록 조회 및 검색 SQL searchText, searchType이름 바꾸라
+    -->
+    <select id="equipmentSelectList" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            eqpmn_id,
+            eqpmn_nm,
+            eqpmn_lat,
+            eqpmn_lon,
+            camera_ip,
+            camera_nm,
+            cntn_id,
+            cntn_pw,
+            reg_dt,
+            rgtr_id,
+            mdfcn_dt,
+            mdfr_id,
+            use_yn
+        FROM
+            eqpmn_reg_info
+        WHERE
+            use_yn = 'Y'
+        <if test="option != null and option != '' and keyword != null and keyword != ''">
+                <choose>
+                    <when test="option == 'all'">
+                        AND (
+                        eqpmn_id LIKE CONCAT('%', #{keyword}, '%') OR
+                        eqpmn_nm LIKE CONCAT('%', #{keyword}, '%') OR
+                        camera_nm LIKE CONCAT('%', #{keyword}, '%') OR
+                        mdfr_id LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </when>
+                    <when test="option == 'eqpmn_id'">
+                        AND eqpmn_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="option == 'eqpmn_nm'">
+                        AND eqpmn_nm LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="option == 'camera_nm'">
+                        AND camera_nm LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="option == 'mdfr_id'">
+                        AND mdfr_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        <choose>
+            <when test="sort == null or sort != 'asc'">
+                ORDER BY reg_dt DESC
+            </when>
+            <when test="sort == 'asc'">
+                ORDER BY reg_dt ASC
+            </when>
+        </choose>
+        <if test="currentPage != null">
+            OFFSET #{pagingRowIndex} LIMIT #{perPage}
+        </if>
+    </select>
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 :장비 목록 COUNT SQL
+    -->
+    <select id="equipmentSelectListCount" parameterType="HashMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            eqpmn_reg_info
+        WHERE
+            use_yn = 'Y'
+
+        <if test="option != null and option != '' and keyword != null and keyword != ''">
+            <choose>
+                <when test="option == 'all'">
+                    AND (
+                    eqpmn_id LIKE CONCAT('%', #{keyword}, '%') OR
+                    eqpmn_nm LIKE CONCAT('%', #{keyword}, '%') OR
+                    camera_nm LIKE CONCAT('%', #{keyword}, '%') OR
+                    mdfr_id LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </when>
+                <when test="option == 'eqpmn_id'">
+                    AND eqpmn_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="option == 'eqpmn_nm'">
+                    AND eqpmn_nm LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="option == 'camera_nm'">
+                    AND camera_nm LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="option == 'mdfr_id'">
+                    AND mdfr_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        </if>
+    </select>
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 :장비 상세보기 SQL
+    -->
+    <select id="equipmentSelectOne" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            eqpmn_id,
+            eqpmn_nm,
+            eqpmn_lat,
+            eqpmn_lon,
+            camera_ip,
+            camera_nm,
+            cntn_id,
+            cntn_pw,
+            reg_dt,
+            rgtr_id,
+            mdfcn_dt,
+            mdfr_id,
+            use_yn
+        FROM
+            eqpmn_reg_info
+        WHERE
+            eqpmn_id = #{eqpmn_id}
+    </select>
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 :장비 수정 SQL
+    -->
+    <update id="equipmentUpdate" parameterType="HashMap">
+    UPDATE
+        eqpmn_reg_info
+    SET
+        eqpmn_nm = #{eqpmn_nm},
+        eqpmn_lat = #{eqpmn_lat},
+        eqpmn_lon = #{eqpmn_lon},
+        camera_ip = #{camera_ip},
+        camera_nm = #{camera_nm},
+        cntn_id = #{cntn_id},
+        cntn_pw = #{cntn_pw},
+        mdfcn_dt = CURRENT_TIMESTAMP,
+        mdfr_id = #{mdfr_id}
+    WHERE
+        eqpmn_id = #{eqpmn_id}
+    </update>
+
+
+    <!--
+        작성자 : 황대찬
+        작성일 : 2024.01.15
+        내용 : 장비 삭제 SQL
+    -->
+    <update id="equipmentDelete" parameterType="HashMap">
+        UPDATE
+            eqpmn_reg_info
+        SET
+            use_yn = 'N'
+        WHERE
+            eqpmn_id = #{eqpmn_id}
+    </update>
+
+
+
+    <!--
+          작성자 : 김예진
+          작성일 : 2024.02.01
+          내용 : 장애 유무를 포함한 장비 목록 조회 SQL
+      -->
+    <select id="eqpmnSelectListIncludeTroblYN" resultType="HashMap">
+        SELECT
+	        *,
+	        CASE
+  		        WHEN trobl.eqpmn_id IS NOT NULL THEN 'N' ELSE 'Y'
+	        END AS status
+
+		FROM ai_camera_v0_1.eqpmn_reg_info eqpmn
+            LEFT JOIN
+	            (SELECT
+  		            eqpmn_id
+  	            FROM ai_camera_v0_1.trobl_ocrn_info
+  	            WHERE recovery_yn = 'N'
+  	            GROUP BY eqpmn_id
+  	            ) trobl
+  	        ON eqpmn.eqpmn_id = trobl.eqpmn_id
+	    WHERE eqpmn.use_yn = 'Y'
+
+    </select>
+</mapper>

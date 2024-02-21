@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.takensoft.aiCamera.statusControl.dao.StatusControlDAO">
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.23
+      내용 : 전체 카메라의 오늘 하루 객체 인식 수 SUM SQL
+	 -->
+    <select id="todayObjectDetectEventSumByAllEquipment" resultType="HashMap">
+        SELECT
+            SUM(person_cnt) AS 보행자,
+            SUM(bicycle_cnt) AS 자전거,
+            SUM(car_cnt) AS 승용차,
+            SUM(bus_cnt) AS 버스,
+            SUM(motorcycle_cnt) AS 오토바이,
+            SUM(truck_cnt) AS 트럭
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y' AND DATE(ocrn_dt) = CURRENT_DATE
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.15
+      내용 : 특정 카메라의 오늘 객체 인식 수 SUM SQL
+     -->
+    <select id="todayObjectDetectEventSumByEqpmn" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            SUM(person_cnt) AS person_cnt,
+            SUM(bicycle_cnt) AS bicycle_cnt,
+            SUM(car_cnt) AS car_cnt,
+            SUM(bus_cnt) AS bus_cnt,
+            SUM(motorcycle_cnt) AS motorcycle_cnt,
+            SUM(truck_cnt) AS truck_cnt
+        FROM
+            object_detect_event
+        WHERE
+            DATE(ocrn_dt) = CURRENT_DATE AND eqpmn_id = #{eqpmn_id}
+    </select>
+
+    <!--
++      작성자 : 김예진
++      작성일 : 2024.01.15
++      내용 : 객체 인식 목록 COUNT
++     -->
+    <select id="objectDetectEventSelectListCount" parameterType="HashMap" resultType="int">
+        SELECT COUNT(*)
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y'
+        <choose>
+            <when test="searchType == 'eqpmn_id'">
+                AND eqpmn.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'eqpmn_nm'">
+                AND eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <otherwise>
+                AND (eqpmn.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%') OR eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%'))
+            </otherwise>
+        </choose>
+
+        <if test="filters.size() > 0">
+            AND (
+            <if test="filters.contains('person')"> person_cnt > 0 </if>
+            <if test="!filters.contains('person')"> person_cnt = 0 </if>
+            AND
+            <if test="filters.contains('bicycle')"> bicycle_cnt > 0 </if>
+            <if test="!filters.contains('bicycle')"> bicycle_cnt = 0 </if>
+            AND
+            <if test="filters.contains('car')"> car_cnt > 0 </if>
+            <if test="!filters.contains('car')"> car_cnt = 0 </if>
+            AND
+            <if test="filters.contains('bus')"> bus_cnt > 0 </if>
+            <if test="!filters.contains('bus')"> bus_cnt = 0 </if>
+            AND
+            <if test="filters.contains('truck')"> truck_cnt > 0 </if>
+            <if test="!filters.contains('truck')"> truck_cnt = 0 </if>
+            AND
+            <if test="filters.contains('motorcycle')"> motorcycle_cnt > 0 </if>
+            <if test="!filters.contains('motorcycle')"> motorcycle_cnt = 0 </if>
+            )
+        </if>
+
+        <if test="startDate"> AND TO_CHAR(event.ocrn_dt, 'YYYY-MM-DD') >= #{startDate} </if>
+        <if test="endDate"> AND TO_CHAR(event.ocrn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate} </if>
+
+    </select>
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.16
+      내용 : 객체 인식 목록 조회 SQL
+     -->
+    <select id="objectDetectEventSelectList" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            eqpmn.eqpmn_id,
+            eqpmn_nm,
+            ocrn_dt,
+            eqpmn_lat,
+            eqpmn_lon,
+            person_cnt,
+            bicycle_cnt,
+            bus_cnt,
+            car_cnt,
+            truck_cnt,
+            motorcycle_cnt,
+            image
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y'
+        <choose>
+            <when test="searchType == 'eqpmn_id'">
+                AND eqpmn.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'eqpmn_nm'">
+                AND eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <otherwise>
+                AND (eqpmn.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%') OR eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%'))
+            </otherwise>
+        </choose>
+
+<!-- filter를 포함하는 경우 -->
+<!--        <if test="filters != null and filters.size() > 0">-->
+<!--            <foreach collection="filters" item="filter" open="AND (" separator=" AND " close=")">-->
+<!--                <choose>-->
+<!--                    <when test="filter == 'person'"> person_cnt > 0 </when>-->
+<!--                    <when test="filter == 'bicycle'"> bicycle_cnt > 0 </when>-->
+<!--                    <when test="filter == 'car'"> car_cnt > 0 </when>-->
+<!--                    <when test="filter == 'bus'"> bus_cnt > 0 </when>-->
+<!--                    <when test="filter == 'truck'"> truck_cnt > 0 </when>-->
+<!--                    <when test="filter == 'motorcycle'"> motorcycle_cnt > 0 </when>-->
+<!--                </choose>-->
+<!--            </foreach>-->
+<!--        </if>-->
+
+
+<!-- filter만 포함하는 경우 -->
+        <if test="filters.size() > 0">
+            AND (
+            <if test="filters.contains('person')"> person_cnt > 0 </if>
+            <if test="!filters.contains('person')"> person_cnt = 0 </if>
+            AND
+            <if test="filters.contains('bicycle')"> bicycle_cnt > 0 </if>
+            <if test="!filters.contains('bicycle')"> bicycle_cnt = 0 </if>
+            AND
+            <if test="filters.contains('car')"> car_cnt > 0 </if>
+            <if test="!filters.contains('car')"> car_cnt = 0 </if>
+            AND
+            <if test="filters.contains('bus')"> bus_cnt > 0 </if>
+            <if test="!filters.contains('bus')"> bus_cnt = 0 </if>
+            AND
+            <if test="filters.contains('truck')"> truck_cnt > 0 </if>
+            <if test="!filters.contains('truck')"> truck_cnt = 0 </if>
+            AND
+            <if test="filters.contains('motorcycle')"> motorcycle_cnt > 0 </if>
+            <if test="!filters.contains('motorcycle')"> motorcycle_cnt = 0 </if>
+            )
+        </if>
+
+        <if test="startDate"> AND TO_CHAR(event.ocrn_dt, 'YYYY-MM-DD') >= #{startDate} </if>
+        <if test="endDate"> AND TO_CHAR(event.ocrn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate} </if>
+
+        ORDER BY ocrn_dt DESC
+
+        OFFSET #{pagingRowIndex} LIMIT #{perPage}
+    </select>
+
+    <!--
+     작성자 : 김예진
+     작성일 : 2024.01.31
+     내용 : 오늘 최신 5개 객체 인식 기록 조회 SQL
+   -->
+    <select id="todayRecentObjectDetectEventList" resultType="HashMap">
+        SELECT
+	        eqpmn.eqpmn_id,
+            eqpmn_nm,
+	        ocrn_dt,
+	        eqpmn_lat,
+	        eqpmn_lon,
+	        person_cnt,
+	        bicycle_cnt,
+	        bus_cnt,
+	        car_cnt,
+	        truck_cnt,
+	        motorcycle_cnt,
+	        image
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y' AND DATE(ocrn_dt) = CURRENT_DATE
+
+		ORDER BY ocrn_dt DESC
+		LIMIT 5
+    </select>
+
+    <!--
+     작성자 : 김예진
+     작성일 : 2024.02.01
+     내용 : 최신 5개 객체 인식 기록 조회 SQL
+    -->
+    <select id="recentObjectDetectEventList" resultType="HashMap">
+        SELECT
+	        eqpmn.eqpmn_id,
+            eqpmn_nm,
+	        ocrn_dt,
+	        eqpmn_lat,
+	        eqpmn_lon,
+	        person_cnt,
+	        bicycle_cnt,
+	        bus_cnt,
+	        car_cnt,
+	        truck_cnt,
+	        motorcycle_cnt,
+	        image
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y'
+
+		ORDER BY ocrn_dt DESC
+		LIMIT 5
+    </select>
+
+    <!--
+     작성자 : 김예진
+     작성일 : 2024.01.29
+     내용 : 특정 장비의 최신 5개 객체 인식 기록 조회 SQL
+    -->
+    <select id="recentObjectDetectEventByEqpmn" parameterType="HashMap" resultType="HashMap">
+        SELECT
+	        eqpmn.eqpmn_id,
+            eqpmn_nm,
+	        ocrn_dt,
+	        eqpmn_lat,
+	        eqpmn_lon,
+	        person_cnt,
+	        bicycle_cnt,
+	        bus_cnt,
+	        car_cnt,
+	        truck_cnt,
+	        motorcycle_cnt,
+	        image
+        FROM object_detect_event AS event
+        JOIN eqpmn_reg_info AS eqpmn ON eqpmn.eqpmn_id = event.eqpmn_id
+        WHERE eqpmn.eqpmn_id = #{eqpmn_id}
+
+		ORDER BY ocrn_dt DESC
+		LIMIT 5
+    </select>
+
+
+
+</mapper>

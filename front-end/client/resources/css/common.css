@@ -1,0 +1,564 @@
+@charset "utf-8";
+
+:root {
+    /* color */
+    --color-black: #3f454d;
+    --color-gray: #c6c6c6;
+    --color-white: #ffffff;
+    --color-orange: #fbbe28;
+    --color-green: #13833b;
+    --color-red: #ff5d5d;
+    --color-blue: #213f99;
+    --color-darkG: #434343;
+    --color-blueE: #e3ecff;
+}
+
+/* 정렬 */
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-around {
+    justify-content: space-around;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.align-start {
+    align-items: flex-start;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+
+
+/* 정렬 배율 */
+
+.flex5 {
+    flex: 0 0 4.5%
+}
+
+.flex10 {
+    flex: 0 0 9.5%
+}
+
+.flex15 {
+    flex: 0 0 14.5%
+}
+
+.flex20 {
+    flex: 0 0 19.5%
+}
+
+.flex25 {
+    flex: 0 0 24.5%
+}
+
+.flex30 {
+    flex: 0 0 29.5%
+}
+
+.flex35 {
+    flex: 0 0 34.5%
+}
+
+.flex40 {
+    flex: 0 0 39.5%
+}
+
+.flex45 {
+    flex: 0 0 44.5%
+}
+
+.flex50 {
+    flex: 0 0 49.5%
+}
+
+.flex55 {
+    flex: 0 0 54.5%
+}
+
+
+.flex60 {
+    flex: 0 0 59.5%
+}
+
+.flex65 {
+    flex: 0 0 64.5%
+}
+
+
+.flex70 {
+    flex: 0 0 69.5%
+}
+
+.flex75 {
+    flex: 0 0 74.5%
+}
+
+.flex80 {
+    flex: 0 0 79.5%
+}
+
+.flex85 {
+    flex: 0 0 84.5%
+}
+
+
+.flex90 {
+    flex: 0 0 89.5%
+}
+
+.flex95 {
+    flex: 0 0 94.5%
+}
+
+/* 너비 */
+.w10 {
+    width: 10%;
+}
+
+.w20 {
+    width: 20%;
+}
+
+.w30 {
+    width: 30%;
+}
+
+.w40 {
+    width: 40%;
+}
+
+.w50 {
+    width: 50%;
+}
+
+.w60 {
+    width: 60%;
+}
+
+.w70 {
+    width: 70%;
+}
+
+.w80 {
+    width: 80%;
+}
+
+.w90 {
+    width: 90%;
+}
+
+.w100 {
+    width: 100%;
+}
+
+/* 마진 */
+.ml0 {
+    margin-left: 0px;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.ml20 {
+    margin-left: 20px;
+}
+
+.ml30 {
+    margin-left: 30px;
+}
+
+.ml40 {
+    margin-left: 40px;
+}
+
+.ml50 {
+    margin-left: 50px;
+}
+
+.ml60 {
+    margin-left: 60px;
+}
+
+.ml70 {
+    margin-left: 70px;
+}
+
+.ml80 {
+    margin-left: 80px;
+}
+
+.ml90 {
+    margin-left: 90px;
+}
+
+.ml100 {
+    margin-left: 100px;
+}
+
+.mr0 {
+    margin-right: 0px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.mr20 {
+    margin-right: 20px;
+}
+
+.mr30 {
+    margin-right: 30px;
+}
+
+.mr40 {
+    margin-right: 40px;
+}
+
+.mr50 {
+    margin-right: 50px;
+}
+
+.mr60 {
+    margin-right: 60px;
+}
+
+.mr70 {
+    margin-right: 70px;
+}
+
+.mr80 {
+    margin-right: 80px;
+}
+
+.mr90 {
+    margin-right: 90px;
+}
+
+.mr100 {
+    margin-right: 100px;
+}
+
+.mt0 {
+    margin-top: 0px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.mt30 {
+    margin-top: 30px;
+}
+
+.mt40 {
+    margin-top: 40px;
+}
+
+.mt50 {
+    margin-top: 50px;
+}
+
+.mt60 {
+    margin-top: 60px;
+}
+
+.mt70 {
+    margin-top: 70px;
+}
+
+.mt80 {
+    margin-top: 80px;
+}
+
+.mt90 {
+    margin-top: 90px;
+}
+
+.mt100 {
+    margin-top: 100px;
+}
+
+.mb0 {
+    margin-bottom: 0px;
+}
+
+.mb5 {
+    margin-bottom: 5px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb30 {
+    margin-bottom: 30px;
+}
+
+.mb40 {
+    margin-bottom: 40px;
+}
+
+.mb50 {
+    margin-bottom: 50px;
+}
+
+.mb60 {
+    margin-bottom: 60px;
+}
+
+.mb70 {
+    margin-bottom: 70px;
+}
+
+.mb80 {
+    margin-bottom: 80px;
+}
+
+.mb90 {
+    margin-bottom: 90px;
+}
+
+.mb100 {
+    margin-bottom: 210px;
+}
+
+
+
+/* btn */
+.small-btn {
+    width: 120px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.large-btn {
+    width: 100%;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.icon-btn {
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.logout-btn {
+    padding: 5px 10px;
+    color: #aaa;
+    position: relative;
+}
+
+.logout-btn::before {
+    content: "";
+    width: 1px;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: #aaa;
+}
+
+.close-btn {
+    color: #d6def6;
+}
+
+
+.blue-btn,
+.blue-border-btn:hover {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+    transition: all 0.3s ease-in-out;
+}
+
+.red-btn,
+.red-border-btn:hover {
+    background-color: var(--color-red);
+    color: var(--color-white);
+    transition: all 0.3s ease-in-out;
+}
+
+.green-btn,
+.green-border-btn:hover {
+    background-color: var(--color-green);
+    color: var(--color-white);
+    transition: all 0.3s ease-in-out;
+}
+
+.orange-btn,
+.orange-border-btn:hover {
+    background-color: var(--color-orange);
+    color: var(--color-white);
+    transition: all 0.3s ease-in-out;
+}
+
+.darkg-btn,
+.darkg-border-btn:hover {
+    background-color: var(--color-darkG);
+    color: var(--color-white);
+    transition: all 0.3s ease-in-out;
+}
+
+.gray-btn,
+.gray-border-btn:hover {
+    background-color: #eee;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.blue-border-btn {
+    border: 1px solid var(--color-blue);
+    color: var(--color-blue);
+    background-color: #fff;
+}
+
+.red-border-btn {
+    border: 1px solid var(--color-red);
+    color: var(--color-red);
+    background-color: #fff;
+}
+
+.green-border-btn {
+    border: 1px solid var(--color-green);
+    color: var(--color-green);
+    background-color: #fff;
+}
+
+.orange-border-btn {
+    border: 1px solid var(--color-orange);
+    ;
+    color: var(--color-orange);
+    background-color: #fff;
+}
+
+.darkg-border-btn {
+    border: 1px solid #434343;
+    color: #434343;
+    background-color: #fff;
+}
+
+.gray-border-btn {
+    border: 1px solid #aaa;
+    color: #aaa;
+    background-color: #fff;
+}
+
+.tp-btn {
+    background-color: transparent;
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+}
+
+button:disabled {
+    background-color: #eee;
+    color: #333;
+}
+
+.del-icon-btn {
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    background-color: var(--color-red);
+    color: var(--color-white);
+    border-radius: 50%;
+}
+
+.set-icon-btn {
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    background-color: var(--color-darkG);
+    color: var(--color-white);
+    border-radius: 50%;
+}
+
+
+/* text 정렬 */
+.text-lf {
+    text-align: left;
+}
+
+.text-ct {
+    text-align: center;
+}
+
+.text-rg {
+    text-align: right;
+}
+
+/* text color */
+.orange {
+    color: var(--color-orange);
+}
+
+.green {
+    color: var(--color-green);
+}
+
+.blue {
+    color: var(--color-blue);
+}
+
+.red {
+    color: var(--color-red);
+}
+
+.cursor{
+    cursor: pointer;
+}

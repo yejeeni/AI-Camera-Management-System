@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../font/PretendardVariable.woff2') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GmarketSansM";
+    src: url("/client/resources/font/GmarketSansMedium.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GmarketSansL";
+    src: url("/client/resources/font/GmarketSansLight.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GmarketSansB";
+    src: url("/client/resources/font/GmarketSansBold.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+}

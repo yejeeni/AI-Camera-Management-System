@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.takensoft.aiCamera.trouble.dao.TroubleDAO">
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.19
+      내용 : 장비 장애 목록 조회 SQL
+	 -->
+    <select id="eqpmnTroubleSelectList" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        ocrn_dt,
+        recovery_yn,
+        recovery_dt,
+        trobl.eqpmn_trobl_cd,
+        trobl.eqpmn_id,
+        eqpmn_nm,
+        trobl_nm
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        JOIN trobl_cd cd ON trobl.eqpmn_trobl_cd = cd.eqpmn_trobl_cd
+        WHERE eqpmn.use_yn = 'Y'
+        AND trobl.eqpmn_trobl_cd IN
+        <foreach collection="errList" item="errCode" open="(" separator="," close=")">
+            #{errCode}
+        </foreach>
+
+        <choose>
+            <when test="recovery and nonRecovery">
+                --             WHERE절 없음
+            </when>
+            <when test="recovery">
+                AND recovery_yn = 'Y'
+            </when>
+            <when test="nonRecovery">
+                AND recovery_yn = 'N'
+            </when>
+        </choose>
+
+        <if test="startDate"> AND TO_CHAR(ocrn_dt, 'YYYY-MM-DD') >= #{startDate} </if>
+        <if test="endDate"> AND TO_CHAR(ocrn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate} </if>
+
+        <choose>
+            <when test="searchType == 'eqpmn_id'">
+                AND trobl.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'eqpmn_nm'">
+                AND eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'all'">
+                AND (trobl.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%') OR eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%'))
+            </when>
+        </choose>
+
+        ORDER BY ocrn_dt DESC
+        OFFSET #{pagingRowIndex} LIMIT #{perPage}
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.19
+      내용 : 장비 장애 목록 COUNT SQL
+	 -->
+    <select id="eqpmnTroubleSelectListCount" parameterType="HashMap" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        JOIN trobl_cd cd ON trobl.eqpmn_trobl_cd = cd.eqpmn_trobl_cd
+        WHERE eqpmn.use_yn = 'Y'
+        AND trobl.eqpmn_trobl_cd IN
+        <foreach collection="errList" item="errCode" open="(" separator="," close=")">
+            #{errCode}
+        </foreach>
+        <choose>
+            <when test="recovery and nonRecovery">
+                --             WHERE절 없음
+            </when>
+            <when test="recovery">
+                AND recovery_yn = 'Y'
+            </when>
+            <when test="nonRecovery">
+                AND recovery_yn = 'N'
+            </when>
+        </choose>
+        <if test="startDate"> AND TO_CHAR(ocrn_dt, 'YYYY-MM-DD') >= #{startDate} </if>
+        <if test="endDate"> AND TO_CHAR(ocrn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate} </if>
+
+        <choose>
+            <when test="searchType == 'eqpmn_id'">
+                AND trobl.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'eqpmn_nm'">
+                AND eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%')
+            </when>
+            <when test="searchType == 'all'">
+                AND (trobl.eqpmn_id LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%') OR eqpmn_nm LIKE CONCAT('%', #{searchKeyword, jdbcType=VARCHAR}, '%'))
+            </when>
+        </choose>
+    </select>
+
+    <!--
+     작성자 : 김예진
+     작성일 : 2024.02.01
+     내용 : 오늘 최신 5개 장비 장애 목록 조회 SQL
+   -->
+    <select id="todayRecentEqpmnTroubleSelectList" resultType="HashMap">
+        SELECT
+            eqpmn_nm,
+            ocrn_dt,
+            recovery_yn,
+            cd.trobl_nm,
+            eqpmn.eqpmn_lat,
+            eqpmn.eqpmn_lon
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        JOIN trobl_cd cd ON trobl.eqpmn_trobl_cd = cd.eqpmn_trobl_cd
+        WHERE eqpmn.use_yn = 'Y' AND DATE(ocrn_dt) = CURRENT_DATE
+
+		ORDER BY ocrn_dt DESC
+		LIMIT 5
+    </select>
+
+    <!--
+     작성자 : 김예진
+     작성일 : 2024.02.01
+     내용 : 최신 5개 장비 장애 목록 조회 SQL
+   -->
+    <select id="recentEqpmnTroubleSelectList" resultType="HashMap">
+        SELECT
+            eqpmn_nm,
+            ocrn_dt,
+            recovery_yn,
+            cd.trobl_nm,
+            eqpmn.eqpmn_lat,
+            eqpmn.eqpmn_lon
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        JOIN trobl_cd cd ON trobl.eqpmn_trobl_cd = cd.eqpmn_trobl_cd
+        WHERE eqpmn.use_yn = 'Y'
+		ORDER BY ocrn_dt DESC
+		LIMIT 5
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.24
+      내용 : 특정 장비의 최신 5개 장애 목록 조회 SQL
+    -->
+    <select id="recentEqpmnTroubleSelectListByEqpmn" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            ocrn_dt,
+            recovery_yn,
+            recovery_dt,
+            trobl.eqpmn_trobl_cd,
+            trobl.eqpmn_id,
+            eqpmn_nm,
+            trobl_nm
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        JOIN trobl_cd cd ON trobl.eqpmn_trobl_cd = cd.eqpmn_trobl_cd
+        WHERE trobl.eqpmn_id = #{eqpmn_id}
+
+        ORDER BY ocrn_dt DESC, recovery_dt DESC
+        LIMIT 5
+    </select>
+
+    <!--
+    작성자 : 김예진
+    작성일 : 2024.01.26
+    내용 : 전체 카메라의 오늘 하루 장애 정보 수 SUM SQL
+   -->
+    <select id="todayEqpmnTroubleSum" resultType="HashMap">
+        SELECT
+            SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) AS CPU,
+            SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-MEM-USAGE' THEN 1 ELSE 0 END) AS 메모리,
+            SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END) AS 연결
+        FROM trobl_ocrn_info trobl
+        JOIN eqpmn_reg_info eqpmn ON trobl.eqpmn_id = eqpmn.eqpmn_id
+        WHERE eqpmn.use_yn = 'Y' AND DATE(trobl.ocrn_dt) = CURRENT_DATE
+    </select>
+
+
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--
+	작성자 : 이세현
+	작성일 : 2024.01.15
+	내용 : 통계분석 관련 SQL 입니다.
+ -->
+<mapper namespace="kr.co.takensoft.aiCamera.statisticalAnalysis.dao.StatisticalAnalysisDAO">
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.25
+      내용 : 객체 인식 데이터의 시간별 산출 SQL
+    -->
+    <select id="hourlyAnalsDetectData" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM (
+            SELECT
+                clct_dt AS year,
+                SUM(person_cnt) AS 보행자,
+                SUM(bicycle_cnt) AS 자전거,
+                SUM(car_cnt) AS 승용차,
+                SUM(bus_cnt) AS 버스,
+                SUM(motorcycle_cnt) AS 오토바이,
+                SUM(truck_cnt) AS 트럭
+            FROM anals_event_data_hr
+            <if test="eqpmn_id">
+                WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY clct_dt
+            ORDER BY clct_dt DESC
+            LIMIT 12
+            ) AS recent_data
+        ORDER BY year ASC
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.25
+      내용 : 객체 인식 데이터의 일별 산출 SQL
+    -->
+    <select id="dailyAnalsDetectData" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM (
+            SELECT
+                clct_dt AS year,
+                SUM(person_cnt) AS 보행자,
+                SUM(bicycle_cnt) AS 자전거,
+                SUM(car_cnt) AS 승용차,
+                SUM(bus_cnt) AS 버스,
+                SUM(motorcycle_cnt) AS 오토바이,
+                SUM(truck_cnt) AS 트럭
+            FROM ai_camera_v0_1.anals_event_data_dd
+            <if test="eqpmn_id">
+                WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY clct_dt
+            ORDER BY clct_dt DESC
+            LIMIT 7
+            ) AS recent_data
+        ORDER BY year ASC
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.25
+      내용 : 객체 인식 데이터의 월별 산출 SQL
+    -->
+    <select id="monthlyAnalsDetectData" parameterType="HashMap" resultType="HashMap">
+         SELECT * FROM (
+            SELECT
+                TO_CHAR(clct_dt, 'YYYY-MM') AS year,
+                SUM(person_cnt) AS 보행자,
+                SUM(bicycle_cnt) AS 자전거,
+                SUM(car_cnt) AS 승용차,
+                SUM(bus_cnt) AS 버스,
+                SUM(motorcycle_cnt) AS 오토바이,
+                SUM(truck_cnt) AS 트럭
+            FROM anals_event_data_mm
+            <if test="eqpmn_id">
+                WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY clct_dt
+            ORDER BY clct_dt DESC
+            LIMIT 12
+            ) AS recent_data
+         ORDER BY year ASC
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.25
+      내용 : 장비 장애 데이터의 시간별 산출 SQL
+    -->
+    <select id="hourlyAnalsTroubleData" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM (
+            SELECT
+                DATE_TRUNC('hour', ocrn_dt) AS date,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) AS value1,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-MEM-USAGE' THEN 1 ELSE 0 END) AS value2,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END) AS value3,
+                (SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) + SUM(CASE WHEN eqpmn_trobl_cd ='ERR-MEM-USAGE' THEN 1 ELSE 0 END)
+                    + SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END)) AS 총합
+            FROM trobl_ocrn_info
+            <if test="eqpmn_id">
+                WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY date
+            ORDER BY date DESC
+            LIMIT 12
+            ) AS recent_data
+        ORDER BY date ASC
+    </select>
+
+    <!--
+       작성자 : 김예진
+       작성일 : 2024.01.25
+       내용 : 장비 장애 데이터의 일별 산출 SQL
+     -->
+    <select id="dailyAnalsTroubleData" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM (
+            SELECT
+                TO_CHAR(ocrn_dt, 'YYYY-MM-DD') AS date,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) AS value1,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-MEM-USAGE' THEN 1 ELSE 0 END) AS value2,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END) AS value3,
+                (SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) + SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-MEM-USAGE' THEN 1 ELSE 0 END)
+                    + SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END)) AS 총합
+            FROM trobl_ocrn_info
+            <if test="eqpmn_id">
+                WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY date
+            ORDER BY date ASC
+            LIMIT 7
+            ) AS recent_data
+        ORDER BY date ASC
+    </select>
+
+    <!--
+      작성자 : 김예진
+      작성일 : 2024.01.25
+      내용 : 장비 장애 데이터의 월별 산출 SQL
+    -->
+    <select id="monthlyAnalsTroubleData" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM (
+            SELECT
+                TO_CHAR(ocrn_dt, 'YYYY-MM') AS date,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) AS value1,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-MEM-USAGE' THEN 1 ELSE 0 END) AS value2,
+                SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END) AS value3,
+                (SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CPU-USAGE' THEN 1 ELSE 0 END) + SUM(CASE WHEN eqpmn_trobl_cd =
+                'ERR-MEM-USAGE' THEN 1 ELSE 0 END) + SUM(CASE WHEN eqpmn_trobl_cd = 'ERR-CONNECTION' THEN 1 ELSE 0 END)) AS 총합
+            FROM trobl_ocrn_info
+            <if test="eqpmn_id">
+            WHERE eqpmn_id = #{eqpmn_id}
+            </if>
+            GROUP BY date
+            ORDER BY date ASC
+            LIMIT 12
+            ) AS recent_data
+        ORDER BY date ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--
+	작성자 : 김재민
+	작성일 : 2024.01.15
+	내용 : 사용자 관련 SQL
+ -->
+<mapper namespace="kr.co.takensoft.aiCamera.system.dao.UserDAO">
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 등록 SQL
+     -->
+    <insert id="userInsert" parameterType="HashMap">
+        INSERT INTO user_info(
+            user_id
+            , user_name
+            , user_pw
+            , user_telno
+            , user_eml
+            , user_auth
+            , reg_dt
+            , rgtr_id
+            , use_yn
+        )VALUES (
+            #{user_id}
+            , #{user_name}
+            , #{user_pw}
+            , #{user_telno}
+            , #{user_eml}
+            , #{user_auth}
+            , CURRENT_TIMESTAMP
+            , #{rgtr_id}
+            , 'Y'
+        )
+    </insert>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 목록 조회 SQL
+     -->
+    <select id="userSelectList" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            user_id
+            , user_name
+            , user_pw
+            , user_telno
+            , user_eml
+            , user_auth
+            , reg_dt
+            , rgtr_id
+            , mdfcn_dt
+            , mdfr_id
+            , use_yn
+        FROM
+            user_info
+        WHERE
+            use_yn = 'Y'
+        <if test="searchType != null and searchType != '' and searchText != null and searchText != ''">
+            <choose>
+                <when test="searchType == 'all'">
+                    AND
+                        (user_name LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_id LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_eml LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_telno LIKE CONCAT('%', #{searchText}, '%'))
+                </when>
+                <when test="searchType == 'user_name'">
+                    AND user_name LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_id'">
+                    AND user_id LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_eml'">
+                    AND user_eml LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_telno'">
+                    AND user_telno LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+            </choose>
+        </if>
+        <choose>
+            <when test="sort == null or sort != 'asc'">
+                ORDER BY reg_dt DESC
+            </when>
+            <when test="sort == 'asc'">
+                ORDER BY reg_dt ASC
+            </when>
+        </choose>
+            OFFSET #{pagingRowIndex} LIMIT #{perPage}
+    </select>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 목록 COUNT SQL
+     -->
+    <select id="userSelectListCount" parameterType="HashMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            user_info
+        WHERE
+            use_yn = 'Y'
+        <if test="searchType != null and searchType != '' and searchText != null and searchText != ''">
+            <choose>
+                <when test="searchType == 'all'">
+                    AND
+                        (user_name LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_id LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_eml LIKE CONCAT('%', #{searchText}, '%')
+                    OR
+                        user_telno LIKE CONCAT('%', #{searchText}, '%'))
+                </when>
+                <when test="searchType == 'user_name'">
+                    AND user_name LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_id'">
+                    AND user_id LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_eml'">
+                    AND user_eml LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="searchType == 'user_telno'">
+                    AND user_telno LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 목록 상세 조회 SQL
+     -->
+    <select id="userSelectOne" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            user_id
+            , user_name
+            , user_telno
+            , user_eml
+        FROM
+            user_info
+        WHERE
+            user_id = #{user_id}
+    </select>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 정보 수정 SQL
+     -->
+    <update id="userUpdate" parameterType="HashMap">
+        UPDATE
+            user_info
+        SET
+            user_name = #{user_name}
+            , user_telno = #{user_telno}
+            , user_eml = #{user_eml}
+            , user_auth = #{user_auth}
+            , mdfcn_dt = CURRENT_TIMESTAMP
+            , mdfr_id = #{mdfr_id}
+            , use_yn = #{use_yn}
+        WHERE
+            user_id= #{user_id}
+    </update>
+
+    <!--
+    작성자 : 김재민
+    작성일 : 2024.02.05
+    내용 : 사용자 마이 페이지 정보 수정 SQL
+    -->
+    <update id="MyUserUpdate" parameterType="HashMap">
+        UPDATE
+            user_info
+        SET
+            user_name = #{user_name}
+            , user_telno = #{user_telno}
+            , user_eml = #{user_eml}
+            , mdfcn_dt = CURRENT_TIMESTAMP
+            , mdfr_id = #{mdfr_id}
+        WHERE
+            user_id= #{user_id}
+    </update>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 정보 삭제 SQL
+    -->
+    <update id="userDelete" parameterType="HashMap">
+        UPDATE
+            user_info
+        SET
+            use_yn = 'N'
+        WHERE
+            user_id = #{user_id}
+    </update>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.31
+        내용 : 사용자 비밀 번호 확인 SQL
+    -->
+    <select id="userPwCheck" parameterType="HashMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            user_info
+        WHERE
+            user_pw = #{old_pw}
+        AND
+            user_id = #{user_id}
+    </select>
+
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.31
+        내용 : 사용자 비밀 번호 변경 SQL
+    -->
+    <update id="userPwUpdate" parameterType="HashMap">
+        UPDATE
+            user_info
+        SET
+            user_pw = #{new_pw},
+            mdfcn_dt = CURRENT_TIMESTAMP,
+            mdfr_id = #{mdfr_id}
+        WHERE
+            user_id = #{user_id}
+    </update>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.23
+        내용 : 사용자 비밀 번호 초기화 SQL
+       -->
+    <update id="userResetPw" parameterType="HashMap">
+        UPDATE
+            user_info
+        SET
+            user_pw = #{user_pw},
+            mdfcn_dt = CURRENT_TIMESTAMP,
+            mdfr_id = #{mdfr_id}
+        WHERE
+            user_id = #{user_id}
+    </update>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 ID 중복 확인 SQL
+    -->
+    <select id="userIdDuplicateCheck" parameterType="HashMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            user_info
+        WHERE
+            user_id = #{user_id}
+    </select>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 로그인 SQL
+    -->
+    <select id="userLogin" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            user_id,
+            user_name,
+            user_auth
+       FROM
+            user_info
+        WHERE
+            user_id = #{user_id}
+        AND
+            user_pw = #{user_pw}
+        AND
+            use_yn = 'Y';
+    </select>
+
+
+
+    <!-- ******************** 유저 접속 기록 ******************** -->
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.15
+        내용 : 사용자 로그인 시 접속 기록 저장 SQL
+    -->
+    <insert id="userAccessRcordInsert" parameterType="HashMap">
+        INSERT INTO cntn_rcord(
+            user_id
+            , cntn_ip
+            , cntn_ty
+            , cntn_dt
+        )VALUES (
+            #{user_id}
+            , #{login_ip}
+            , #{device_ty}
+            , CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.22
+        내용 : 사용자 접속 기록 조회 SQL
+     -->
+    <select id="userAccessRcordSelectList" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        cntn_dt
+        , cntn_ty
+        , cntn_ip
+        , user_id
+        FROM
+        cntn_rcord
+        <if test="searchType != null and searchType != '' and searchText != null">
+            <choose>
+                <!-- startDate와 endDate가 공백이 아닐 때 -->
+                <when test="startDate != '' and endDate != ''">
+                    WHERE TO_CHAR(cntn_dt, 'YYYY-MM-DD') >= #{startDate} AND TO_CHAR(cntn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+                    <if test="searchType == 'all'">
+                        AND (cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                        OR cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                        OR user_id LIKE CONCAT('%', #{searchText}, '%'))
+                    </if>
+                    <if test="searchType == 'cntn_ty'">
+                        AND cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'cntn_ip'">
+                        AND cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'user_id'">
+                        AND user_id LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                </when>
+                <!-- startDate와 endDate가 공백일 때 -->
+                <otherwise>
+                    <if test="searchType == 'all'">
+                        WHERE (cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                        OR cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                        OR user_id LIKE CONCAT('%', #{searchText}, '%'))
+                    </if>
+                    <if test="searchType == 'cntn_ty'">
+                        WHERE cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'cntn_ip'">
+                        WHERE cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'user_id'">
+                        WHERE user_id LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+        <choose>
+            <when test="sort == null or sort != 'asc'">
+                ORDER BY cntn_dt DESC
+            </when>
+            <when test="sort == 'asc'">
+                ORDER BY cntn_dt ASC
+            </when>
+        </choose>
+        OFFSET #{pagingRowIndex} LIMIT #{perPage}
+    </select>
+
+    <!--
+        작성자 : 김재민
+        작성일 : 2024.01.22
+        내용 : 사용자 접속 기록 조회 COUNT SQL
+     -->
+    <select id="userAccessRcordSelectListCount" parameterType="HashMap" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            cntn_rcord
+        <if test="searchType != null and searchType != '' and searchText != null">
+            <choose>
+                <!-- startDate와 endDate가 공백이 아닐 때 -->
+                <when test="startDate != '' and endDate != ''">
+                    WHERE TO_CHAR(cntn_dt, 'YYYY-MM-DD') >= #{startDate} AND TO_CHAR(cntn_dt, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+                    <if test="searchType == 'all'">
+                        AND (cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                        OR cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                        OR user_id LIKE CONCAT('%', #{searchText}, '%'))
+                    </if>
+                    <if test="searchType == 'cntn_ty'">
+                        AND cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'cntn_ip'">
+                        AND cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'user_id'">
+                        AND user_id LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                </when>
+                <!-- startDate와 endDate가 공백일 때 -->
+                <otherwise>
+                    <if test="searchType == 'all'">
+                        WHERE (cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                        OR cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                        OR user_id LIKE CONCAT('%', #{searchText}, '%'))
+                    </if>
+                    <if test="searchType == 'cntn_ty'">
+                        WHERE cntn_ty LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'cntn_ip'">
+                        WHERE cntn_ip LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test="searchType == 'user_id'">
+                        WHERE user_id LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+</mapper>

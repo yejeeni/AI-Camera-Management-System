@@ -1,0 +1,62 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="spring-legacy-project:war exploded">
+    <output-path>$PROJECT_DIR$/back-end/target/ROOT</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>spring-legacy-project</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="spring-legacy-project" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.3.22" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.3.22" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.3" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.11.0" />
+          <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.4" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.10" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.7" />
+          <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:5.0.1" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha1" />
+          <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:3.0.7" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.5.0" />
+          <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:3.5.0" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:5.2.2" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-lite:5.2.2" />
+          <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:5.0.3" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-compress:1.21" />
+          <element id="library" level="project" name="Maven: com.github.virtuald:curvesapi:1.07" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.17.2" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-collections4:4.4" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi:5.2.2" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.15" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-math3:3.6.1" />
+          <element id="library" level="project" name="Maven: com.zaxxer:SparseBitSet:1.2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4.7" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:7.0" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.0" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/back-end/target/ROOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="spring-legacy-project/web/Web" />
+    </root>
+  </artifact>
+</component>
